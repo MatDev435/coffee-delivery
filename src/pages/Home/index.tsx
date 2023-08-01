@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Coffee, Package, ShoppingCart, Timer } from 'phosphor-react'
 import {
   CardsContainer,
@@ -9,39 +9,17 @@ import {
   Statistic,
   Statistics,
 } from './styled'
+import { products } from './utils/products'
+import { Card, CoffeeProps } from './components/Card'
 
 import homeImage from '../../assets/home-image.png'
 
-// 'ESPECIAL' | 'GELADO' | 'TRADICIONAL' | 'COM LEITE' | 'ALCOÓLICO'
-
-enum Flag {
-  ESPECIAL = 'ESPECIAL',
-  GELADO = 'GELADO',
-  TRADICIONAL = 'TRADICIONAL',
-  COM_LEITE = 'COM LEITE',
-  ALCOÓLICO = 'ALCOÓLICO',
-}
-
-interface CoffeesProps {
-  pictureSrc: string
-  flags: Flag[]
-  name: string
-  description: string
-  price: string
-}
-
 export function Home() {
-  const [coffees, setCoffees] = useState<CoffeesProps[]>([
-    {
-      pictureSrc: 'asdc',
-      name: 'asdc',
-      flags: [Flag.ALCOÓLICO, Flag.GELADO],
-      description: 'asdcasdc',
-      price: '19',
-    },
-  ])
+  const [coffees, setCoffees] = useState<CoffeeProps[]>([])
 
-  console.log(coffees)
+  useEffect(() => {
+    setCoffees(products)
+  }, [])
 
   return (
     <HomeContainer>
@@ -96,7 +74,11 @@ export function Home() {
       <CoffeesContainer>
         <h1>Nossos cafés</h1>
 
-        <CardsContainer>{}</CardsContainer>
+        <CardsContainer>
+          {coffees.map((coffee) => {
+            return <Card key={coffee.id} coffee={coffee} />
+          })}
+        </CardsContainer>
       </CoffeesContainer>
     </HomeContainer>
   )

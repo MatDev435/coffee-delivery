@@ -77,4 +77,10 @@ export const CoffeesContainer = styled.div`
   }
 `
 
-export const CardsContainer = styled.div``
+export const CardsContainer = styled.div`
+  margin-top: 3.375rem;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 2rem;
+`
