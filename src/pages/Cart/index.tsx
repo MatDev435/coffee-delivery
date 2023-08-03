@@ -2,15 +2,21 @@ import { Bank, CreditCard, CurrencyDollar, MapPin, Money } from 'phosphor-react'
 import {
   CartContainer,
   CartHeader,
+  CartItemsContainer,
   CartTitle,
   Input,
   LocationContainer,
   LocationField,
   LocationFieldFull,
   LocationFields,
+  OrderInfoContainer,
   PaymentContainer,
   PaymentOptions,
+  SelectedItemsContainer,
+  Separator,
+  SubmitButton,
 } from './styled'
+import { CartItem } from './components/CartItem'
 
 export function Cart() {
   return (
@@ -80,6 +86,34 @@ export function Cart() {
 
       <div>
         <CartTitle>Cafés selecionados</CartTitle>
+
+        <CartItemsContainer>
+          <SelectedItemsContainer>
+            <CartItem />
+            <Separator />
+            <CartItem />
+            <Separator />
+          </SelectedItemsContainer>
+
+          <OrderInfoContainer>
+            <h2>
+              Total de itens
+              <span>R$ 9,90</span>
+            </h2>
+
+            <h2>
+              Entrega
+              <span>R$ 3,50</span>
+            </h2>
+
+            <h1>
+              Total
+              <span>R$ 13,40</span>
+            </h1>
+          </OrderInfoContainer>
+
+          <SubmitButton type="submit">confirmar pedido</SubmitButton>
+        </CartItemsContainer>
       </div>
     </CartContainer>
   )
