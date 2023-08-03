@@ -3,7 +3,6 @@ import { Coffee, Package, ShoppingCart, Timer } from 'phosphor-react'
 import {
   CardsContainer,
   CoffeesContainer,
-  HomeContainer,
   HomeHeader,
   HomeHeaderLeft,
   Statistic,
@@ -22,7 +21,7 @@ export function Home() {
   }, [])
 
   return (
-    <HomeContainer>
+    <div>
       <HomeHeader>
         <HomeHeaderLeft>
           <h1>
@@ -80,6 +79,6 @@ export function Home() {
           })}
         </CardsContainer>
       </CoffeesContainer>
-    </HomeContainer>
+    </div>
   )
 }
