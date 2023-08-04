@@ -17,8 +17,12 @@ import {
   SubmitButton,
 } from './styled'
 import { CartItem } from './components/CartItem'
+import { useContext } from 'react'
+import { CartItemsContext } from '../../contexts/CartContext'
 
 export function Cart() {
+  const { cartItems } = useContext(CartItemsContext)
+
   return (
     <CartContainer>
       <div>
@@ -89,10 +93,12 @@ export function Cart() {
 
         <CartItemsContainer>
           <SelectedItemsContainer>
-            <CartItem />
-            <Separator />
-            <CartItem />
-            <Separator />
+            {cartItems.map((cartItem) => (
+              <>
+                <CartItem key={cartItem.id} cartItem={cartItem} />
+                <Separator key={cartItem.id} />
+              </>
+            ))}
           </SelectedItemsContainer>
 
           <OrderInfoContainer>

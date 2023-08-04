@@ -1,4 +1,5 @@
-import { Flag, Minus, Plus, ShoppingCart } from 'phosphor-react'
+import { useContext, useState } from 'react'
+import { Minus, Plus, ShoppingCart } from 'phosphor-react'
 import {
   CardContainer,
   CounterContainer,
@@ -6,6 +7,7 @@ import {
   TagsContainer,
 } from './styles'
 import { CardTag } from '../CardTag'
+import { CartItemsContext } from '../../../../contexts/CartContext'
 
 export interface CoffeeProps {
   id: number
@@ -21,6 +23,30 @@ interface CoffeeInfoType {
 }
 
 export function Card({ coffee }: CoffeeInfoType) {
+  const [itemAmount, setItemAmount] = useState(1)
+  const { addItemToCart } = useContext(CartItemsContext)
+
+  function handleAddAmount() {
+    setItemAmount((state) => {
+      return state + 1
+    })
+  }
+
+  function handleRemoveAmount() {
+    setItemAmount((state) => {
+      return state - 1
+    })
+  }
+
+  function handleAddItemToCart() {
+    addItemToCart({
+      pictureSrc: coffee.pictureSrc,
+      name: coffee.name,
+      price: coffee.price,
+      amount: itemAmount,
+    })
+  }
+
   const formatedPrice = String(coffee.price).replace('.', ',').concat('0')
 
   return (
@@ -43,16 +69,16 @@ export function Card({ coffee }: CoffeeInfoType) {
         </p>
 
         <CounterContainer>
-          <button type="button">
+          <button onClick={handleRemoveAmount} type="button">
             <Minus size={14} weight={'bold'} />
           </button>
-          <h1>1</h1>
-          <button type="button">
+          <h1>{itemAmount}</h1>
+          <button onClick={handleAddAmount} type="button">
             <Plus size={14} weight={'bold'} />
           </button>
         </CounterContainer>
 
-        <button type="submit">
+        <button onClick={handleAddItemToCart} type="button">
           <ShoppingCart size={22} />
         </button>
       </FormContainer>

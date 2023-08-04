@@ -8,7 +8,9 @@ export function Header() {
   return (
     <HeaderContainer>
       <div>
-        <img src={coffeeDeliveryLogo} alt="" />
+        <NavLink to="/">
+          <img src={coffeeDeliveryLogo} alt="" />
+        </NavLink>
       </div>
 
       <RightSide>

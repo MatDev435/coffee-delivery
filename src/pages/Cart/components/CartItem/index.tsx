@@ -1,3 +1,4 @@
+import { CartItemType } from '../../../../reducers/cartItems/reducer'
 import {
   CartItemContainer,
   CartItemInfo,
@@ -7,20 +8,24 @@ import {
 } from './styles'
 import { Minus, Plus, Trash } from 'phosphor-react'
 
-import expresso from '../../../../assets/expresso.png'
+interface CartItemProps {
+  cartItem: CartItemType
+}
 
-export function CartItem() {
+export function CartItem({ cartItem }: CartItemProps) {
+  const formatedPrice = String(cartItem.price).replace('.', ',').concat('0')
+
   return (
     <CartItemContainer>
       <div>
-        <img src={expresso} alt="" />
+        <img src={cartItem.pictureSrc} alt="" />
       </div>
 
       <CartItemInfo>
         <CartItemInfoHeader>
-          <h1>Expresso Tradicional</h1>
+          <h1>{cartItem.name}</h1>
 
-          <h2>R$ 9,90</h2>
+          <h2>R$ {formatedPrice}</h2>
         </CartItemInfoHeader>
 
         <CartItemInfoFooter>
@@ -29,7 +34,7 @@ export function CartItem() {
               <Minus size={14} />
             </button>
 
-            <h1>1</h1>
+            <h1>{cartItem.amount}</h1>
 
             <button type="button">
               <Plus size={14} />
