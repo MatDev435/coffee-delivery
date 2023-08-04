@@ -1,4 +1,4 @@
-import { isDraft, produce } from 'immer'
+import { produce } from 'immer'
 import { ActionType } from './actions'
 
 export interface CartItemType {
@@ -29,6 +29,31 @@ export function cartItemsReducer(state: CartItemState, action: any) {
 
       return produce(state, (draft) => {
         draft.cartItems.push(action.payload.itemToAdd)
+      })
+    }
+
+    case ActionType.REMOVE_ITEM: {
+      const cartItemIndex = state.cartItems.findIndex((cartItem) => {
+        return cartItem.id === action.payload.itemToRemoveId
+      })
+
+      if (cartItemIndex < 0) {
+        return state
+      }
+
+      const currentCartItem = state.cartItems[cartItemIndex]
+
+      if (currentCartItem.amount > action.payload.amountToRemove) {
+        const amountRest =
+          currentCartItem.amount - action.payload.amountToRemove
+
+        return produce(state, (draft) => {
+          draft.cartItems[cartItemIndex].amount = amountRest
+        })
+      }
+
+      return produce(state, (draft) => {
+        draft.cartItems.splice(cartItemIndex, 1)
       })
     }
 

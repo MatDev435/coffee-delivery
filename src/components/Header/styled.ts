@@ -41,5 +41,27 @@ export const RightSide = styled.div`
     background: ${(props) => props.theme['yellow-300']};
     color: ${(props) => props.theme['yellow-700']};
     border-radius: 6px;
+    text-decoration: none;
+    position: relative;
+
+    span {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      color: ${(props) => props.theme.white};
+      font-size: 0.875rem;
+      width: 24px;
+      height: 24px;
+      font-weight: bold;
+      padding: 0.125rem;
+      background: ${(props) => props.theme['yellow-700']};
+      border-radius: 50%;
+      position: absolute;
+      top: -0.625rem;
+      right: -0.625rem;
+
+      /* right: -0.375rem; */
+    }
   }
 `

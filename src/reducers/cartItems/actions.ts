@@ -5,7 +5,12 @@ export enum ActionType {
   REMOVE_ITEM = 'REMOVE_ITEM',
 }
 
-export function addItem(itemToAdd: CartItemType) {
+export interface RemoveItemFromCartProps {
+  itemToRemoveId: string
+  amountToRemove: number
+}
+
+export function addItemToCartAction(itemToAdd: CartItemType) {
   return {
     type: ActionType.ADD_ITEM,
     payload: {
@@ -14,11 +19,15 @@ export function addItem(itemToAdd: CartItemType) {
   }
 }
 
-export function removeItem(itemToRemove: CartItemType) {
+export function removeItemFromCartAction({
+  itemToRemoveId,
+  amountToRemove,
+}: RemoveItemFromCartProps) {
   return {
     type: ActionType.REMOVE_ITEM,
     payload: {
-      itemToRemove,
+      itemToRemoveId,
+      amountToRemove,
     },
   }
 }

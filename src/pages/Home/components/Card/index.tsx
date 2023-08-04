@@ -33,9 +33,11 @@ export function Card({ coffee }: CoffeeInfoType) {
   }
 
   function handleRemoveAmount() {
-    setItemAmount((state) => {
-      return state - 1
-    })
+    if (itemAmount > 1) {
+      setItemAmount((state) => {
+        return state - 1
+      })
+    }
   }
 
   function handleAddItemToCart() {
