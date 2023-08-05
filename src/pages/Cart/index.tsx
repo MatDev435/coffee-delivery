@@ -19,9 +19,11 @@ import {
 } from './styled'
 import { CartItem } from './components/CartItem'
 import { CartItemsContext } from '../../contexts/CartContext'
+import { useForm } from 'react-hook-form'
 
 export function Cart() {
   const { cartItems } = useContext(CartItemsContext)
+  const { register } = useForm()
 
   const totalItemsPrice = cartItems.reduce((accumulator, currentItem) => {
     return accumulator + currentItem.price * currentItem.amount
@@ -50,7 +52,7 @@ export function Cart() {
 
           <LocationFields>
             <LocationField>
-              <Input placeholder="CEP" />
+              <Input type="number" placeholder="CEP" />
             </LocationField>
 
             <LocationFieldFull>
