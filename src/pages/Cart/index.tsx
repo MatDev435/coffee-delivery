@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, FocusEvent, useEffect } from 'react'
 import { Bank, CreditCard, CurrencyDollar, MapPin, Money } from 'phosphor-react'
 import {
   CartContainer,
@@ -20,10 +20,49 @@ import {
 import { CartItem } from './components/CartItem'
 import { CartItemsContext } from '../../contexts/CartContext'
 import { useForm } from 'react-hook-form'
+import axios from 'axios'
+import { adressContext } from '../../contexts/AdressContext'
+import { DeliveryInfo } from './components/DeliveryInfo'
 
 export function Cart() {
   const { cartItems } = useContext(CartItemsContext)
-  const { register } = useForm()
+  const { adressData, changeAdressData } = useContext(adressContext)
+
+  const { register, setValue } = useForm()
+
+  async function fetchAdressData(cep: string) {
+    try {
+      const { data } = await axios.get(`https://viacep.com.br/ws/${cep}/json`)
+
+      changeAdressData({
+        bairro: data.bairro,
+        cep: data.cep,
+        complemento: data.complemento,
+        localidade: data.localidade,
+        logradouro: data.logradouro,
+        uf: data.uf,
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  function handleAutoInsertAdress(event: FocusEvent<HTMLInputElement>) {
+    const cep = event.target.value
+
+    if (cep.length === 8) {
+      fetchAdressData(cep)
+    }
+  }
+
+  useEffect(() => {
+    setValue('cep', adressData.cep || '')
+    setValue('street', adressData.logradouro || '')
+    setValue('number', adressData.number || '')
+    setValue('complement', adressData.complemento || '')
+    setValue('neighborhood', adressData.bairro || '')
+    setValue('city', adressData.localidade || '')
+  }, [adressData, setValue])
 
   const totalItemsPrice = cartItems.reduce((accumulator, currentItem) => {
     return accumulator + currentItem.price * currentItem.amount
@@ -41,64 +80,7 @@ export function Cart() {
       <div>
         <CartTitle>Complete seu pedido</CartTitle>
 
-        <LocationContainer>
-          <CartHeader iconColor="yellowDark">
-            <MapPin size={22} />
-            <p>
-              Endereço de Entrega <br />
-              <span>Informe o endereço onde deseja receber seu pedido</span>
-            </p>
-          </CartHeader>
-
-          <LocationFields>
-            <LocationField>
-              <Input type="number" placeholder="CEP" />
-            </LocationField>
-
-            <LocationFieldFull>
-              <Input placeholder="Rua" />
-            </LocationFieldFull>
-
-            <LocationField>
-              <Input placeholder="Número" />
-              <Input placeholder="Complemento (Opcional)" />
-            </LocationField>
-
-            <LocationField>
-              <Input placeholder="Bairro" />
-              <Input placeholder="Cidade" />
-            </LocationField>
-          </LocationFields>
-        </LocationContainer>
-
-        <PaymentContainer>
-          <CartHeader iconColor="purple">
-            <CurrencyDollar size={22} />
-            <p>
-              Pagamento <br />
-              <span>
-                O pagamento é feito na entrega. Escolha a forma que deseja pagar
-              </span>
-            </p>
-          </CartHeader>
-
-          <PaymentOptions>
-            <button type="button">
-              <CreditCard size={16} />
-              Cartão de crédito
-            </button>
-
-            <button type="button">
-              <Bank size={16} />
-              Cartão de débito
-            </button>
-
-            <button type="button">
-              <Money size={16} />
-              Dinheiro
-            </button>
-          </PaymentOptions>
-        </PaymentContainer>
+        <DeliveryInfo />
       </div>
 
       <div>
