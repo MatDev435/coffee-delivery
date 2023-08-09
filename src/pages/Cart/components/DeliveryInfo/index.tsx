@@ -1,4 +1,6 @@
+import { useContext, FocusEvent } from 'react'
 import { Bank, CreditCard, CurrencyDollar, MapPin, Money } from 'phosphor-react'
+import { useFormContext } from 'react-hook-form'
 import {
   CartHeader,
   Input,
@@ -9,8 +11,39 @@ import {
   PaymentContainer,
   PaymentOptions,
 } from './styles'
+import { adressContext } from '../../../../contexts/AdressContext'
+import axios from 'axios'
 
 export function DeliveryInfo() {
+  const { changeAdressData } = useContext(adressContext)
+
+  const { register } = useFormContext()
+
+  async function fetchAdressData(cep: string) {
+    try {
+      const { data } = await axios.get(`https://viacep.com.br/ws/${cep}/json`)
+
+      changeAdressData({
+        bairro: data.bairro,
+        cep: data.cep,
+        complemento: data.complemento,
+        localidade: data.localidade,
+        logradouro: data.logradouro,
+        uf: data.uf,
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  function handleAutoInsertAdress(event: FocusEvent<HTMLInputElement>) {
+    const cep = event.target.value
+
+    if (cep.length === 8) {
+      fetchAdressData(cep)
+    }
+  }
+
   return (
     <>
       <LocationContainer>

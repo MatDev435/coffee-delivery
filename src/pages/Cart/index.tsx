@@ -1,59 +1,26 @@
-import { useContext, FocusEvent, useEffect } from 'react'
-import { Bank, CreditCard, CurrencyDollar, MapPin, Money } from 'phosphor-react'
+import { useContext, useEffect } from 'react'
 import {
   CartContainer,
-  CartHeader,
   CartItemsContainer,
   CartTitle,
-  Input,
-  LocationContainer,
-  LocationField,
-  LocationFieldFull,
-  LocationFields,
   OrderInfoContainer,
-  PaymentContainer,
-  PaymentOptions,
   SelectedItemsContainer,
   Separator,
   SubmitButton,
 } from './styled'
 import { CartItem } from './components/CartItem'
 import { CartItemsContext } from '../../contexts/CartContext'
-import { useForm } from 'react-hook-form'
-import axios from 'axios'
+import { FormProvider, useForm } from 'react-hook-form'
 import { adressContext } from '../../contexts/AdressContext'
 import { DeliveryInfo } from './components/DeliveryInfo'
 
 export function Cart() {
   const { cartItems } = useContext(CartItemsContext)
-  const { adressData, changeAdressData } = useContext(adressContext)
+  const { adressData } = useContext(adressContext)
 
-  const { register, setValue } = useForm()
+  const deliveryForm = useForm()
 
-  async function fetchAdressData(cep: string) {
-    try {
-      const { data } = await axios.get(`https://viacep.com.br/ws/${cep}/json`)
-
-      changeAdressData({
-        bairro: data.bairro,
-        cep: data.cep,
-        complemento: data.complemento,
-        localidade: data.localidade,
-        logradouro: data.logradouro,
-        uf: data.uf,
-      })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  function handleAutoInsertAdress(event: FocusEvent<HTMLInputElement>) {
-    const cep = event.target.value
-
-    if (cep.length === 8) {
-      fetchAdressData(cep)
-    }
-  }
+  const { setValue } = deliveryForm
 
   useEffect(() => {
     setValue('cep', adressData.cep || '')
@@ -80,7 +47,9 @@ export function Cart() {
       <div>
         <CartTitle>Complete seu pedido</CartTitle>
 
-        <DeliveryInfo />
+        <FormProvider {...deliveryForm}>
+          <DeliveryInfo />
+        </FormProvider>
       </div>
 
       <div>
