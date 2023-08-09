@@ -11,12 +11,12 @@ import {
 import { CartItem } from './components/CartItem'
 import { CartItemsContext } from '../../contexts/CartContext'
 import { FormProvider, useForm } from 'react-hook-form'
-import { adressContext } from '../../contexts/AdressContext'
+import { deliveryInfoContext } from '../../contexts/DeliveryInfoContext'
 import { DeliveryInfo } from './components/DeliveryInfo'
 
 export function Cart() {
   const { cartItems } = useContext(CartItemsContext)
-  const { adressData } = useContext(adressContext)
+  const { adressData } = useContext(deliveryInfoContext)
 
   const deliveryForm = useForm()
 

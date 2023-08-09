@@ -5,9 +5,11 @@ import { NavLink } from 'react-router-dom'
 
 import coffeeDeliveryLogo from '../../assets/coffee-delivery-logo.svg'
 import { CartItemsContext } from '../../contexts/CartContext'
+import { deliveryInfoContext } from '../../contexts/DeliveryInfoContext'
 
 export function Header() {
   const { cartItems } = useContext(CartItemsContext)
+  const { adressData } = useContext(deliveryInfoContext)
 
   const totalItemsInCart = cartItems.reduce((accumulator, currentItem) => {
     return accumulator + currentItem.amount
@@ -24,7 +26,9 @@ export function Header() {
       <RightSide>
         <p>
           <MapPin size={22} />
-          Porto Alegre, RS
+          {adressData.logradouro === undefined
+            ? 'Complete seu endereço'
+            : `${adressData.localidade}, ${adressData.uf}`}
         </p>
 
         <NavLink to="/cart">

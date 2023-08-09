@@ -11,11 +11,11 @@ import {
   PaymentContainer,
   PaymentOptions,
 } from './styles'
-import { adressContext } from '../../../../contexts/AdressContext'
+import { deliveryInfoContext } from '../../../../contexts/DeliveryInfoContext'
 import axios from 'axios'
 
 export function DeliveryInfo() {
-  const { changeAdressData } = useContext(adressContext)
+  const { changeAdressData } = useContext(deliveryInfoContext)
 
   const { register } = useFormContext()
 
